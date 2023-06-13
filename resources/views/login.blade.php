@@ -1,5 +1,10 @@
 
 <!DOCTYPE html>
+@php
+    $logo = DB::table('tb_logo')->first();
+    $logo = empty($logo->logo)?"":$logo->logo;
+
+@endphp
 <html>
 <head>
   <meta charset="utf-8">
@@ -18,16 +23,29 @@
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+  <style>
+    .bggua {
+        top: 4%;
+        left: 29%;
+        position: absolute;
+        z-index: -9999;
+        opacity: 0.3;
+    }
+  </style>
 </head>
 <body class="hold-transition login-page" style="background: url('gambar/background.jpg');filter: brightness()">
 <div class="login-box mt-0" style="border-radius: 10px">
 
+    <img src="{{ url('gambar', [$logo]) }}" width="550px" class="bggua" alt="">
+
   <!-- /.login-logo -->
-  <div class="login-logo">
-    <h2 class="text-success"><b>Login</b></h2>
-  </div>
+
   <div class="card card-outline card-success" >
     <div class="card-body login-card-body my-1 py-1">
+        <div class="login-logo">
+            <h2 class="text-success"><b>Login</b></h2>
+          </div>
         <div class="text-center">
             <p>Sistem Informasi Perpustakaan</p>
         </div>

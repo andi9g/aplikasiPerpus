@@ -170,7 +170,7 @@ class pengaturan extends Controller
                 return redirect('pengaturan')->with('warning','Terdapat Buku yang terdaftar pada Jenis terkait');
             }
 
-            
+
         } catch (\Throwable $th) {
             return redirect('pengaturan')->with('toast_error','terjadi kesalahan');
         }
@@ -178,7 +178,7 @@ class pengaturan extends Controller
 
     public function destroy(jurusan $jurusan,$id)
     {
-       
+
         try {
             $data = anggota::where('id_jurusan',$id)->count();
             if ($data<=0) {
@@ -190,7 +190,7 @@ class pengaturan extends Controller
                 return redirect('pengaturan')->with('warning','Terdapat Anggota yang terdaftar pada Jurusan terkait');
             }
 
-            
+
         } catch (\Throwable $th) {
             return redirect('pengaturan')->with('toast_error','terjadi kesalahan');
         }
@@ -201,7 +201,7 @@ class pengaturan extends Controller
             $cek = pengaturanPerpus::count();
             if($cek>0){
                 $cek = pengaturanPerpus::first();
-                
+
                 $update = pengaturanPerpus::where('id',$cek->id)->update([
                     'nama_perpus' => $request->nama_perpus,
                     'keterlambatan' => $request->keterlambatan
@@ -209,7 +209,7 @@ class pengaturan extends Controller
                 if ($update) {
                     return redirect('pengaturan')->with('toast_success','Data berhasil di Update');
                 }
-                
+
             }else {
                 $insert = new pengaturanPerpus;
                 $insert->nama_perpus = $request->nama_perpus;
@@ -222,11 +222,11 @@ class pengaturan extends Controller
         } catch (\Throwable $th) {
             return redirect('pengaturan')->with('toast_error','terjadi kesalahan');
         }
-        
+
     }
     public function logo(Request $request)
     {
-        
+
         try {
             $logo =  $request->file('logo');
             $format =  $logo->getClientOriginalExtension();
@@ -234,11 +234,11 @@ class pengaturan extends Controller
             $tgl = date('Y-m-d');
             $en = strtotime($tgl);
             $nama_file = $en."_logo_perpus.".$format;
-            
+
             $conv = strtolower($format);
             if($conv == 'jpg'||$conv == 'jpeg'||$conv == 'png'){
                 if($size<=2010000){
-                    
+
                     $cekDBC = pengaturanLogo::count();
                     if($cekDBC>0){
                         $cekDB = pengaturanLogo::first();
@@ -258,7 +258,7 @@ class pengaturan extends Controller
                             return redirect('pengaturan')->with('toast_success','Gambar Logo Berhasil Diubah');
                         }
                     }
-    
+
                 }else {
                     return redirect('pengaturan')->with('toast_error','Maximal Size gambar 2Mb');
                 }
@@ -268,10 +268,10 @@ class pengaturan extends Controller
         } catch (\Throwable $th) {
             return redirect('pengaturan')->with('toast_error','terjadi kesalahan');
         }
-       
-        
+
+
     }
-    
+
     public function keluar(Request $request)
     {
         $request->session()->forget('nama_pengguna');
@@ -307,7 +307,7 @@ class pengaturan extends Controller
             if($password1 == $password2){
                 if(strlen($password2)>=5){
                     $password = Hash::make($request->password2);
-            
+
                     if($status=='anggota'){
                         $update = anggota::where('id',$id)->update([
                             'password' => $password
@@ -324,7 +324,7 @@ class pengaturan extends Controller
             }else {
                 return redirect('/profile')->with('toast_error','Password salah..');
             }
-            
+
             if($update){
                 $request->session()->forget('nama_pengguna');
                 $request->session()->forget('id');
@@ -336,27 +336,27 @@ class pengaturan extends Controller
                 return redirect('/profile')->with('warning','Gagal merubah password..');
 
             }
-            
+
         } catch (\Throwable $th) {
             return redirect('/profile')->with('warning','terjadi kesalahan');
         }
-        
+
     }
 
     public function ubahGambar(Request $request)
     {
-        
+
             $id = $request->session()->get('id');
             $nama = $request->session()->get('nama_pengguna');
             $status = $request->session()->get('status');
-    
+
             $gambar =  $request->file('gambarProfile');
             $format =  $gambar->getClientOriginalExtension();
             $size = $gambar->getSize();
             $tgl = date('Y-m-d');
             $en = strtotime($tgl);
             $nama_file = $en."_gambar_".$id.$nama.".".$format;
-    
+
             $conv = strtolower($format);
             if($conv == 'jpg'||$conv == 'jpeg'||$conv == 'png'){
                 if($size <=2000000){
@@ -369,7 +369,7 @@ class pengaturan extends Controller
                         $update = admin::where('id',$id)->update([
                             'foto' => $nama_file
                         ]);
-                        
+
                     }else if($status== 'anggota'){
                         $cek = anggota::where('id',$id)->first();
                         if($cek && !empty($cek->foto)){
@@ -386,11 +386,11 @@ class pengaturan extends Controller
             }else {
                 return redirect('/profile')->with('toast_error','Format yang di dukung (jpg,jpeg & png)');
             }
-            
+
             if ($update) {
                 return redirect('/profile')->with('success','Gambar berhasil di ubah..');
             }
-        
+
 
 
     }
